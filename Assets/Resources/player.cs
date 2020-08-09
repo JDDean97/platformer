@@ -61,8 +61,9 @@ public class player : MonoBehaviour
         {
             for (float i = 0; i < 4; i++)
             {
+                RaycastHit hit;
                 Vector3 offset = transform.TransformDirection(new Vector3(i, 0, x)) * 0.2f;
-                if(Physics.Raycast(transform.position + start + offset, Vector3.down, length))
+                if(Physics.Raycast(transform.position + start + offset, Vector3.down,out hit,length) && !hit.transform.CompareTag("Enemy"))
                 {
                     Debug.DrawRay(transform.position + start + offset, Vector3.down * length, Color.red);
                     counter++;
@@ -192,6 +193,11 @@ public class player : MonoBehaviour
     {
         if(collision.transform.CompareTag("Enemy"))
         {
+            Vector3 dir = collision.contacts[0].point - transform.position;
+            //Debug.DrawRay(transform.position, transform.position - Vector3.up,Color.cyan,3);
+            float angle = Vector3.Angle(dir,-transform.up);
+            //Debug.DrawRay(collision.contacts[0].point, -dir, Color.cyan, 3);
+            Debug.Log(angle);
             hurt(40);
         }
     }
